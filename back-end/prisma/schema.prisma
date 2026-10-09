@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/******************** ENUMS ********************/
+
+enum Role {
+  EMPLOYEE // Colaborador
+  MANAGER  // Gestor
+  HR       // RH
+}
+
+enum ContractWorkMode {
+  ONSITE // Presencial
+  REMOTE // Remoto
+  HYBRID // Híbrido
+}
+
+enum EntryWorkMode {
+  OFFICE // No escritório
+  REMOTE // Em casa
+  TRAVEL // Em viagem
+}
+
+enum EntryType {
+  CLOCK_IN    // Entrada
+  BREAK_START // Início do intervalo
+  BREAK_END   // Fim do intervalo
+  CLOCK_OUT   // Saída
+}
+
+enum EntrySource {
+  WEB        // Registrada pelo próprio colaborador
+  ADJUSTMENT // Criada a partir de um ajuste aprovado
+}
+
+enum AdjustmentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ClosingStatus {
+  OPEN
+  CLOSED
+}
+
+/******************** MODELS ********************/
+
+model Office {
+  id           Int        @id @default(autoincrement())
+  name         String                   // Nome da unidade
+  country_code String     @db.Char(2)   // País (ISO): BR, PT, ES...
+  timezone     String                   // Fuso IANA: America/Sao_Paulo
+  employees    Employee[]
+}
+
+model Team {
+  id         Int        @id @default(autoincrement())
+  name       String
+  manager_id Int?                        // Gestor do time (opcional)
+  manager    Employee?  @relation("TeamManager", fields: [manager_id], references: [id])
+  members    Employee[] @relation("TeamMembers")
+}
+
+model Employee {
+  id                     Int              @id @default(autoincrement())
+  name                   String
+  email                  String           @unique
+  role                   Role             @default(EMPLOYEE)
+  work_mode              ContractWorkMode @default(ONSITE)
+  home_timezone          String                            // Fuso "base" do colaborador
+  daily_expected_minutes Int              @default(480)    // Jornada esperada (8h)
+  active                 Boolean          @default(true)
+  created_at             DateTime         @default(now()) @db.Timestamptz(3)
+
+  office_id Int
+  office    Office @relation(fields: [office_id], references: [id])
+  team_id   Int?
+  team      Team?  @relation("TeamMembers", fields: [team_id], references: [id])
+
+  managed_teams        Team[]              @relation("TeamManager")
+  time_entries         TimeEntry[]
+  adjustment_requests  AdjustmentRequest[] @relation("RequestedBy")
+  reviewed_adjustments AdjustmentRequest[] @relation("ReviewedBy")
+  monthly_closings     MonthlyClosing[]    @relation("ClosingOwner")
+  closed_closings      MonthlyClosing[]    @relation("ClosedBy")
+}
+
+model TimeEntry {
+  id                 Int           @id @default(autoincrement())
+  employee_id        Int
+  employee           Employee      @relation(fields: [employee_id], references: [id])
+  type               EntryType
+  occurred_at        DateTime      @db.Timestamptz(3)   // Instante em UTC (carimbado pelo servidor)
+  timezone           String                             // Fuso IANA onde foi registrada
+  utc_offset_minutes Int                                // "Foto" do offset no momento
+  work_date          DateTime      @db.Date             // Data LOCAL da jornada
+  country_code       String        @db.Char(2)          // País no momento do registro
+  work_mode          EntryWorkMode
+  source             EntrySource   @default(WEB)
+  note               String?
+  superseded_at      DateTime?     @db.Timestamptz(3)   // Preenchido quando um ajuste a substitui
+  created_at         DateTime      @default(now()) @db.Timestamptz(3)
+
+  adjustment_requests AdjustmentRequest[]
+
+  @@index([employee_id, work_date])
+}
+
+model AdjustmentRequest {
+  id                    Int              @id @default(autoincrement())
+  employee_id           Int
+  employee              Employee         @relation("RequestedBy", fields: [employee_id], references: [id])
+  time_entry_id         Int?                                  // Nulo = marcação esquecida
+  time_entry            TimeEntry?       @relation(fields: [time_entry_id], references: [id])
+  requested_type        EntryType
+  requested_occurred_at DateTime         @db.Timestamptz(3)
+  timezone              String
+  reason                String                                // Justificativa
+  status                AdjustmentStatus @default(PENDING)
+  reviewed_by_id        Int?
+  reviewed_by           Employee?        @relation("ReviewedBy", fields: [reviewed_by_id], references: [id])
+  reviewed_at           DateTime?        @db.Timestamptz(3)
+  review_comment        String?
+  created_at            DateTime         @default(now()) @db.Timestamptz(3)
+
+  @@index([status])
+}
+
+model MonthlyClosing {
+  id               Int           @id @default(autoincrement())
+  employee_id      Int
+  employee         Employee      @relation("ClosingOwner", fields: [employee_id], references: [id])
+  year_month       String        @db.Char(7)   // Ex: "2026-10"
+  status           ClosingStatus @default(OPEN)
+  worked_minutes   Int?
+  expected_minutes Int?
+  balance_minutes  Int?
+  closed_by_id     Int?
+  closed_by        Employee?     @relation("ClosedBy", fields: [closed_by_id], references: [id])
+  closed_at        DateTime?     @db.Timestamptz(3)
+
+  @@unique([employee_id, year_month])
+}
