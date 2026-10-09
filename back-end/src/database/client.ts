@@ -14,6 +14,10 @@ const adapter = new PrismaPg({
 
 const prisma = new PrismaClient({
   adapter,
+  // O hash da senha nunca é devolvido nas consultas, a não ser que seja pedido explicitamente pelo login
+  omit: {
+    employee: {password_hash: true}
+  },
   log: [
     { emit: "event", level: "query" },
     { emit: "stdout", level: "error" },

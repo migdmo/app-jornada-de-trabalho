@@ -29,6 +29,11 @@ export function errorHandler(
       return
     }
   }
+   // Dados com formato inválido (campo obrigatório faltando, tipo errado...)
+  if (error instanceof Prisma.PrismaClientValidationError) {
+    res.status(400).json({ message: 'Dados inválidos na requisição.' })
+    return
+  }
 
   // Qualquer outro erro: não expomos detalhes internos ao cliente
   console.error(error)
