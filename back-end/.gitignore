@@ -64,3 +64,8 @@ jspm_packages/
 !.yarn/versions
 
 /generated/prisma
+# Configurações de assistentes de IA
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
