@@ -1,0 +1,29 @@
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
+import { AuthProvider } from './auth/AuthContext'
+import { ProtectedRoute } from './auth/ProtectedRoute'
+import { Layout } from './components/Layout'
+import { LoginPage } from './pages/LoginPage'
+import { ClockPage } from './pages/ClockPage'
+
+function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+
+          {/* Tudo aqui dentro exige login */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<Layout />}>
+              <Route index element={<ClockPage />} />
+            </Route>
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  )
+}
+
+export default App
