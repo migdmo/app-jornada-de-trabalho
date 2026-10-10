@@ -51,3 +51,15 @@ export function todayIn(timezone: string): string {
   // O formato en-CA já é AAAA-MM-DD
   return new Intl.DateTimeFormat('en-CA', { timeZone: timezone }).format(new Date())
 }
+
+// Saldo com sinal: 60 → "+1h00" · -30 → "-0h30" · 0 → "0h00"
+export function formatBalance(total: number): string {
+  return total > 0 ? `+${formatMinutes(total)}` : formatMinutes(total)
+}
+
+// Data e hora curtas no fuso informado: "08/10, 18:00"
+export function formatDateTime(iso: string, timezone: string): string {
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: timezone,
+  }).format(new Date(iso))
+}

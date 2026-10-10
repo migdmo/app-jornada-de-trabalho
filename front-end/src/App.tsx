@@ -4,6 +4,8 @@ import { ProtectedRoute } from './auth/ProtectedRoute'
 import { Layout } from './components/Layout'
 import { LoginPage } from './pages/LoginPage'
 import { ClockPage } from './pages/ClockPage'
+import { WorkdaysPage } from './pages/workdaysPage'
+import { AdjustmentsPage } from './pages/AdjustmentsPage'
 
 function App() {
   return (
@@ -15,7 +17,9 @@ function App() {
           {/* Tudo aqui dentro exige login */}
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
-              <Route index element={<ClockPage />} />
+             <Route index element={<ClockPage />} />
+            <Route path="jornada" element={<WorkdaysPage />} />
+            <Route path="ajustes" element={<AdjustmentsPage />} />
             </Route>
           </Route>
 
