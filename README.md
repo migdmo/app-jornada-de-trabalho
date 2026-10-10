@@ -2,7 +2,7 @@
 
 Plataforma web interna para registro e acompanhamento da jornada de trabalho de colaboradores distribuídos entre **Brasil e Europa**, com suporte a trabalho remoto, viagens internacionais, correção de marcações com aprovação e fechamento mensal.
 
-> Desafio técnico desenvolvido por **<Miguel de Moura Oliveira** · <miguelmoura112@gmail.com>
+> Desafio técnico desenvolvido por **Miguel de Moura Oliveira** · <miguelmoura112@gmail.com>
 
 <!-- Substitua pelos seus prints (crie a pasta docs/screenshots) -->
 | Registro de ponto (celular) | Jornada do mês | Aprovação de ajustes |
