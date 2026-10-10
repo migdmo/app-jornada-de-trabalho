@@ -4,7 +4,7 @@ import logger from 'morgan'
 import cors from 'cors'
 
 import indexRouter from './routes/index'
-import usersRouter from './routes/users'
+
 import officesRouter from './routes/offices'
 import teamsRouter from './routes/teams'
 import employeesRouter from './routes/employees'
@@ -25,7 +25,6 @@ app.use(cookieParser())
 /***************** ROTAS *************************/
 
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
 app.use('/offices', officesRouter)
 app.use('/teams', teamsRouter)
 app.use('/employees', employeesRouter)
