@@ -44,3 +44,10 @@ export function deactivate(id: number) {
     data: { active: false },
   })
 }
+// Colaboradores ativos dos times gerenciados por um gestor
+export function findByManager(managerId: number) {
+  return prisma.employee.findMany({
+    where: { active: true, team: { manager_id: managerId } },
+    orderBy: { name: 'asc' },
+  })
+}

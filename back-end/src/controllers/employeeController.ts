@@ -53,3 +53,12 @@ export async function remove(req: Request<EmployeeIdParams>, res: Response, next
     next(error)
   }
 }
+
+export async function myTeam(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const members = await service.findTeamMembers(req.user!.id)
+    res.json(members)
+  } catch (error) {
+    next(error)
+  }
+}

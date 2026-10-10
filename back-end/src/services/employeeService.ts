@@ -140,3 +140,7 @@ export async function deactivate(id: number): Promise<SafeEmployee> {
   await findById(id)
   return repository.deactivate(id)
 }
+
+export async function findTeamMembers(managerId: number): Promise<SafeEmployee[]> {
+  return repository.findByManager(managerId)
+}
