@@ -70,7 +70,7 @@ async function main() {
   })
 
   /********** RH e gestor **********/
-  await prisma.employee.create({
+  const ana = await prisma.employee.create({
     data: {
       name: 'Ana Ribeiro', email: 'ana@ddgroup.com', password_hash,
       role: 'HR', work_mode: 'ONSITE',
@@ -131,6 +131,9 @@ async function main() {
       diego.id, day, 'Europe/Madrid', 'ES', 'REMOTE',
       { forgetClockOut: day.hasSame(diegoForgot, 'day') }
     )
+
+        await createWorkday(ana.id, day, 'America/Sao_Paulo', 'BR', 'OFFICE')
+    await createWorkday(bruno.id, day, 'Europe/Lisbon', 'PT', 'OFFICE')
   }
     /********** Ajuste pendente **********/
   // Diego pediu para corrigir a saída esquecida; Bruno ainda não revisou

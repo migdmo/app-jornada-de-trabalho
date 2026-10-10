@@ -105,3 +105,16 @@ export interface AdjustmentRequest {
   reviewed_by: { id: number; name: string } | null
   time_entry: Omit<TimeEntry, 'local_time'> | null
 }
+export interface MonthlyClosing {
+  id: number
+  employee_id: number
+  year_month: string
+  status: 'OPEN' | 'CLOSED'
+  worked_minutes: number | null
+  expected_minutes: number | null
+  balance_minutes: number | null
+  closed_by_id: number | null
+  closed_at: string | null
+  employee: { id: number; name: string }
+  closed_by: { id: number; name: string } | null
+}

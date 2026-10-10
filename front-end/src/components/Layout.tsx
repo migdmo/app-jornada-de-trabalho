@@ -10,11 +10,12 @@ interface MenuLink {
   roles?: Role[]   // vazio = todos os papéis
 }
 
-// As próximas telas entram nesta lista
 const LINKS: MenuLink[] = [
   { to: '/', label: 'Ponto', icon: 'bi-clock' },
   { to: '/jornada', label: 'Minha jornada', icon: 'bi-calendar3' },
   { to: '/ajustes', label: 'Ajustes', icon: 'bi-pencil-square' },
+  { to: '/equipe', label: 'Equipe', icon: 'bi-people', roles: ['MANAGER', 'HR'] },
+  { to: '/fechamento', label: 'Fechamento', icon: 'bi-lock', roles: ['HR'] },
 ]
 
 export function Layout() {
