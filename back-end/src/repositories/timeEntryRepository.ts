@@ -25,3 +25,16 @@ export function findByPeriod(employeeId: number, from: Date, to: Date) {
 export function create(data: Prisma.TimeEntryUncheckedCreateInput) {
   return prisma.timeEntry.create({ data })
 }
+export function findById(id: number) {
+  return prisma.timeEntry.findUnique({
+    where: { id },
+  })
+}
+
+// Primeira marcação válida de um dia (usada para herdar país e modalidade)
+export function findFirstOfDay(employeeId: number, workDate: Date) {
+  return prisma.timeEntry.findFirst({
+    where: { employee_id: employeeId, work_date: workDate, superseded_at: null },
+    orderBy: { occurred_at: 'asc' },
+  })
+}

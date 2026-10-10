@@ -132,6 +132,20 @@ async function main() {
       { forgetClockOut: day.hasSame(diegoForgot, 'day') }
     )
   }
+    /********** Ajuste pendente **********/
+  // Diego pediu para corrigir a saída esquecida; Bruno ainda não revisou
+  await prisma.adjustmentRequest.create({
+    data: {
+      employee_id: diego.id,
+      requested_type: 'CLOCK_OUT',
+      requested_occurred_at: DateTime.fromISO(
+        `${diegoForgot.toISODate()}T18:00`,
+        { zone: 'Europe/Madrid' }
+      ).toUTC().toJSDate(),
+      timezone: 'Europe/Madrid',
+      reason: 'Esqueci de registrar a saída. Trabalhei normalmente até as 18h.',
+    },
+  })
 
   console.log('Seed concluído. Senha de todos os usuários: Senha@123')
 }

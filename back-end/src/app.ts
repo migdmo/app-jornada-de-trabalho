@@ -11,6 +11,8 @@ import employeesRouter from './routes/employees'
 import { errorHandler } from './middlewares/errorHandler'
 import authRouter from './routes/auth'
 import meRouter from './routes/me'
+import adjustmentRequestsRouter from './routes/adjustmentRequests'
+import monthlyClosingsRouter from './routes/monthlyClosings'
 
 const app = express()
 
@@ -29,6 +31,8 @@ app.use('/teams', teamsRouter)
 app.use('/employees', employeesRouter)
 app.use('/auth', authRouter)
 app.use('/me', meRouter)
+app.use('/adjustment-requests', adjustmentRequestsRouter)
+app.use('/monthly-closings', monthlyClosingsRouter)
 
 /***************** TRATAMENTO DE ERROS ***********/
 // Precisa ser o ÚLTIMO app.use: só recebe erros que passaram pelas rotas

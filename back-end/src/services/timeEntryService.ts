@@ -30,7 +30,7 @@ const LABELS: Record<EntryType, string> = {
 /******************** AUXILIARES ********************/
 
 // Converte "2026-10-20" no formato que o banco usa para colunas DATE
-function toDbDate(isoDate: string): Date {
+export function toDbDate(isoDate: string): Date {
   return new Date(`${isoDate}T00:00:00.000Z`)
 }
 
@@ -71,7 +71,7 @@ function validate(data: CreateTimeEntryDto): void {
   }
 }
 
-async function ensureMonthIsOpen(employeeId: number, workDate: string): Promise<void> {
+export async function ensureMonthIsOpen(employeeId: number, workDate: string): Promise<void> {
   const yearMonth = workDate.slice(0, 7)
   const closing = await closingRepository.findByEmployeeAndMonth(employeeId, yearMonth)
 
