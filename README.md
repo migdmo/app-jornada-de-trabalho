@@ -26,6 +26,7 @@ Plataforma web interna para registro e acompanhamento da jornada de trabalho de 
 10. [API](#10-api)
 11. [Estrutura de pastas](#11-estrutura-de-pastas)
 12. [Limitações e próximos passos](#12-limitações-e-próximos-passos)
+13. [Uso de ferramentas de IA](#13-uso-de-ferramentas-de-ia)
 
 ---
 
@@ -564,3 +565,12 @@ Itens deixados de fora conscientemente nesta primeira versão, em ordem aproxima
 - **Interface em outros idiomas** (espanhol e inglês), dada a operação europeia.
 - **Exportação do fechamento** para a folha de pagamento.
 - **Registro de ponto sem conexão** (PWA), sincronizado quando a internet voltar, útil em viagens.
+
+
+---
+
+## 13. Uso de ferramentas de IA
+
+Utilizei um assistente de IA como apoio durante o desenvolvimento, principalmente para discutir alternativas de modelagem, revisar decisões e acelerar a escrita de código repetitivo.
+
+As decisões de arquitetura e as regras de negócio documentadas acima foram analisadas e validadas por mim, e consigo explicar e defender cada uma delas. Todo o código foi revisado, executado e testado localmente antes da entrega.
